@@ -1,0 +1,25 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+PriceChangesVENV/
+venv/
+ENV/
+env/
+
+# Databases
+*.db
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Other IDE/project files (optional, depends on editor)
+.vscode/
+.idea/
