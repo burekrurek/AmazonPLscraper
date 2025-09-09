@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 import pandas
 class Database:
-    def __init__(self, db_name = 'database.db'):
+    def __init__(self, db_name = '../database.db'):
         self.db_name = os.path.abspath(db_name)
         
         
@@ -21,10 +21,10 @@ class Database:
             with sqlite3.connect(self.db_name) as connection:
                 cursor = connection.cursor()
                 if table_name == 'products':
-                    QUERY = f"""INSERT INTO products (ProductName, Price, SubmissionDate, ProductLink)
-                    VALUES (?,?,?,?);"""
+                    QUERY = f"""INSERT INTO products (ProductName, Price, SubmissionDate, ProductLink, ProductImage)
+                    VALUES (?,?,?,?,?);"""
                     for item in values:
-                        cursor.execute(QUERY, (item['product_name'],item['product_price'], datetime.now().strftime('%Y%m%d_%H%M'), item['product_link']))
+                        cursor.execute(QUERY, (item['product_name'],item['product_price'], datetime.now().strftime('%Y%m%d_%H%M'), item['product_link'], item['product_image']))
                         print(f'Data of {item} added succesfully')
                 elif table_name == 'links':
                     QUERY = f"""INSERT INTO links (ProductLink) VALUES (?);"""
@@ -57,22 +57,15 @@ class Database:
         except Exception as e:
             return e
         
+    def custom_query(self, query):
+        with sqlite3.connect(self.db_name) as connection:
+            cursor = connection.cursor()
+            cursor.execute(query)
+            return cursor.fetchall()
+        
         
 
 
-db = Database()
 
-db.create_table('products', [
-    'id INTEGER PRIMARY KEY',
-    'ProductName TEXT',
-    'Price FLOAT',
-    'SubmissionDate TIMESTAMP',
-    'ProductLink TEXT'
-])
-
-db.create_table('links', [
-    'id INTEGER PRIMARY KEY',
-    'ProductLink VARCHAR(255) UNIQUE'
-])
 
 
